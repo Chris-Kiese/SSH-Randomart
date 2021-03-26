@@ -1,0 +1,12 @@
+{
+  "name": "ssh-fingerprint-randomart",
+  "version": "1.0.0",
+  "description": "Module to build randomart, which are the same as ssh fingerprints from ssh keys",
+    "type": "module",
+    "main": "randomart.js",
+  "scripts": {
+    "test": "echo \"Start tests\" && node test/test.js"
+  },
+  "author": "Christoph Kiesewetter <christoph.kiesewetter@axians.de>",
+  "license": "ISC"
+}
