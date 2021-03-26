@@ -174,6 +174,4 @@ export const drunkenBishop = (fingerprint, md5) => {
     return parseRandomart(md5);
 }
 
-export default {
-    drunkenBishop,
-}
+export default drunkenBishop;
