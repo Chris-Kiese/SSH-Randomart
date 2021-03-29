@@ -144,7 +144,7 @@ const addBorders = (content, md5) => {
     return ra
 }
 
-const parseRandomart = (md5) => {
+const parseRandomart = (md5, addBorder) => {
     let content ='';
     let count;
     
@@ -159,11 +159,12 @@ const parseRandomart = (md5) => {
             ? symbols.charAt(count)
             : '?'     
     }
-
-    return addBorders(content);
+    if(addBorder) return addBorders(content, md5);
+    return content;
+    
 }
 
-export const drunkenBishop = (fingerprint, md5) => {
+export const drunkenBishop = (fingerprint, md5=false, addBorder=true) => {
     //Initialize field & start position
     field = new Array(x*y).fill(0); //fieldsize: 153
     currentPosition = startPosition;
@@ -171,7 +172,7 @@ export const drunkenBishop = (fingerprint, md5) => {
     //Decode to bitpairs and move accordingly
     walk(decode(fingerprint, md5));
 
-    return parseRandomart(md5);
+    return parseRandomart(md5, !!addBorder);
 }
 
 export default drunkenBishop;
