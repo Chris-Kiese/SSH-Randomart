@@ -2,7 +2,6 @@
 const fieldsize = 8;
 const x = fieldsize*2 + 1; //17
 const y = fieldsize + 1; //9
-let field;
 
 //Symbols used for the randomart
 const symbols = ' .o+=*B0X@%&#/^SEF'
@@ -12,7 +11,6 @@ const numberOfPosition = (x,y) => x+17*y
 
 //Define start & current position on the field
 const startPosition = numberOfPosition(Math.floor(x/2),Math.floor(y/2));
-let currentPosition;
 
 const initPositionType = () => {
     const pos = [];
@@ -33,7 +31,7 @@ const initPositionType = () => {
 
 const positionTypeField = initPositionType()
 
-const movement = (bits) => {
+const movement = (bits, currentPosition) => {
     let ul = -18;
     let ur = -16;
     let dl = 16;
@@ -121,15 +119,21 @@ const decode = (fingerprint, md5) => {
 }
 
 const walk = (steps) => {
+    //Initialize field & start position
+    let field = new Array(x*y).fill(0); //fieldsize: 153
+    let currentPosition = startPosition;
+
     for(let i=0; i<steps.length; i++) {
         //change current position according to bits
-        movement(steps[i])
+        movement(steps[i], currentPosition)
         //Increase counter of current position
         field[currentPosition]++;
     }
     //Set start & end position to the according values
     field[startPosition] = 15;
     field[currentPosition] =16;
+
+    return field;
 }
 
 const addBorders = (content, md5) => {
@@ -144,7 +148,7 @@ const addBorders = (content, md5) => {
     return ra
 }
 
-const parseRandomart = (md5, addBorder) => {
+const parseRandomart = (md5, addBorder, field) => {
     let content ='';
     let count;
     
@@ -165,14 +169,10 @@ const parseRandomart = (md5, addBorder) => {
 }
 
 export const drunkenBishop = (fingerprint, md5=false, addBorder=true) => {
-    //Initialize field & start position
-    field = new Array(x*y).fill(0); //fieldsize: 153
-    currentPosition = startPosition;
-
     //Decode to bitpairs and move accordingly
-    walk(decode(fingerprint, md5));
+    const field = walk(decode(fingerprint, md5));
 
-    return parseRandomart(md5, !!addBorder);
+    return parseRandomart(md5, !!addBorder, field);
 }
 
 export default drunkenBishop;
